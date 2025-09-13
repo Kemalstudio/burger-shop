@@ -1,0 +1,539 @@
+/* === ОБЩИЕ СТИЛИ СТРАНИЦЫ === */
+.menu-page-container {
+    background-color: #f9f9f9;
+}
+
+.menu-layout-wrapper {
+    display: flex;
+    gap: 30px;
+    padding-top: 50px;
+    padding-bottom: 120px;
+    align-items: flex-start;
+}
+
+/* === СТИЛИ БОКОВОЙ ПАНЕЛИ (ASIDE) === */
+.menu-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 20px;
+}
+
+.sidebar-category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-category-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-category-item img {
+    width: 24px;
+    height: 24px;
+    filter: invert(20%);
+    transition: filter 0.3s ease;
+}
+
+.sidebar-category-item:hover {
+    background-color: #f0f0f0;
+}
+
+.sidebar-category-item.active {
+    background-color: #fff;
+    color: #000;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.sidebar-category-item.active img {
+    filter: none;
+}
+
+
+/* === СТИЛИ СЕТКИ ПРОДУКТОВ === */
+.product-grid-area {
+    flex-grow: 1;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.menu-product-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.menu-product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.card-image-wrapper {
+    position: relative;
+    background-color: #f7f7f7;
+    padding: 10px;
+}
+
+.menu-product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    display: block;
+}
+
+.product-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: #fff;
+    color: #000;
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-badge.new {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.card-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 16px;
+}
+
+.card-text-content {
+    flex-grow: 1;
+}
+
+.menu-product-card h4 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: #000;
+}
+
+.menu-product-card p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.menu-product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    margin-top: auto;
+}
+
+.menu-product-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+}
+
+.menu-product-select-btn {
+    background-color: #FFF5EE;
+    color: #FF6900;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.menu-product-select-btn:hover {
+    background-color: #FF6900;
+    color: #fff;
+}
+
+/* === ОБЩИЕ СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА === */
+.hidden {
+    display: none !important;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.product-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 24px;
+    z-index: 1001;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    width: 950px;
+    max-width: 90%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-close-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    color: #aaa;
+    background: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 10;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.modal-close-button:hover {
+    color: #000;
+    background: #e0e0e0;
+    transform: rotate(90deg);
+}
+
+.modal-content-wrapper {
+    display: flex;
+    gap: 32px;
+    padding: 32px;
+    overflow-y: auto;
+}
+
+/* === СТИЛИ ДЛЯ ЛЕВОЙ ЧАСТИ МОДАЛЬНОГО ОКНА (ИЗОБРАЖЕНИЕ) === */
+.modal-image-container {
+    flex-basis: 45%;
+    align-self: flex-start;
+    position: sticky;
+    top: 0;
+}
+
+#modal-product-image {
+    width: 100%;
+    border-radius: 16px;
+    object-fit: contain;
+}
+
+/* === СТИЛИ ДЛЯ ПРАВОЙ ЧАСТИ МОДАЛЬНОГО ОКНА (ДЕТАЛИ) === */
+.modal-details-container {
+    flex-basis: 55%;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+#modal-product-name {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+}
+
+#modal-product-weight {
+    font-size: 16px;
+    color: #888;
+    background-color: #f5f5f5;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+#modal-product-description {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+/* Ингредиенты для удаления */
+.modal-ingredients-section h4,
+.modal-additives-section h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.ingredients-chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.ingredient-chip {
+    background-color: #f0f1f3;
+    border-radius: 50px;
+    padding: 8px 8px 8px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.ingredient-chip .toggle-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #e1e2e4;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    transition: all 0.3s ease;
+}
+
+.ingredient-chip.removed {
+    background-color: #f5f5f5;
+    color: #aaa;
+    text-decoration: line-through;
+}
+
+.ingredient-chip.removed .toggle-icon {
+    background-color: #4CAF50;
+    color: white;
+    transform: rotate(360deg);
+}
+
+/* Добавки */
+.additives-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.additive-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 10px;
+    cursor: pointer;
+    background: #fff;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 85px;
+}
+
+.additive-card:hover {
+    border-color: #ddd;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.additive-image {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.additive-info {
+    text-align: left;
+}
+
+.additive-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+    margin: 0;
+}
+
+.additive-price {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+}
+
+.additive-toggle-btn {
+    margin-left: auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 2px solid #f0f1f3;
+    background-color: #f8f8f8;
+    color: #888;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.additive-card.selected {
+    border-color: #FF6900;
+    background-color: #FFF5EE;
+}
+
+.additive-card.selected .additive-toggle-btn {
+    background-color: #FF6900;
+    color: #fff;
+    border-color: #FF6900;
+}
+
+/* Футер модального окна */
+.modal-footer {
+    margin-top: auto;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 24px 32px;
+    background: #fff;
+    border-radius: 0 0 24px 24px;
+    border-top: 1px solid #f0f0f0;
+    position: sticky;
+    bottom: 0;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    background-color: #f0f1f3;
+    border-radius: 12px;
+    padding: 4px;
+}
+
+.quantity-btn {
+    border: none;
+    background-color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 24px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s;
+}
+
+.quantity-btn:hover {
+    background-color: #f5f5f5;
+}
+
+#quantity-value {
+    font-size: 20px;
+    font-weight: 600;
+    padding: 0 20px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.modal-add-to-cart-btn {
+    flex-grow: 1;
+    background-color: #FF6900;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-add-to-cart-btn:hover {
+    background-color: #e65e00;
+}
+
+/* === АДАПТИВНОСТЬ === */
+@media (max-width: 1200px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .menu-sidebar {
+        display: none;
+    }
+
+    .menu-layout-wrapper {
+        flex-direction: column;
+    }
+
+    .product-modal {
+        width: 90%;
+    }
+
+    .modal-content-wrapper {
+        flex-direction: column;
+    }
+
+    .modal-image-container {
+        position: static;
+    }
+
+    .additives-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .additives-grid {
+        grid-template-columns: 1fr;
+    }
+}
