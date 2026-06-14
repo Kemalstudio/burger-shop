@@ -19,6 +19,45 @@
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('css/slicknav.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    
+    <style>
+        .login_link {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .login_link:hover {
+            color: #FF6347 !important;
+            text-decoration: none;
+        }
+        .user_menu_dropdown .dropdown-toggle {
+            color: #FF6347;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .user_menu_dropdown .dropdown-menu {
+            background-color: #121212;
+            border: 1px solid #333;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .user_menu_dropdown .dropdown-item {
+            color: #ffffff;
+            font-size: 14px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+        .user_menu_dropdown .dropdown-item:hover {
+            background-color: #FF6347 !important;
+            color: #ffffff !important;
+        }
+    </style>
     @stack('styles')
 </head>
 
@@ -79,7 +118,27 @@
                                     </ul>
                                 </div>
                                 <div class="book_btn d-none d-xl-block">
-                                    <a class="#" href="#">+993 64 00 53 74</a>
+                                    @guest
+                                        <!-- Элементы для гостей -->
+                                        <a href="{{ route('login') }}" class="login_link mr-3">Войти</a>
+                                        <a href="{{ route('register') }}" class="boxed-btn3" style="padding: 10px 20px; font-size: 12px; text-transform: uppercase; border-radius: 4px;">Регистрация</a>
+                                    @else
+                                        <!-- Выпадающий список для авторизованных пользователей -->
+                                        <div class="dropdown d-inline-block user_menu_dropdown">
+                                            <a class="dropdown-toggle" href="#" role="button" id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-user"></i> {{ Auth::user()->name }}
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuLink">
+                                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                    Выйти
+                                                </a>
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                    @csrf
+                                                </form>
+                                            </div>
+                                        </div>
+                                    @endguest
                                 </div>
                             </div>
                         </div>
