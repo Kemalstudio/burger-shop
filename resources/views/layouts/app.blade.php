@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('css/slicknav.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    {{-- Место для подключения уникальных стилей для отдельных страниц --}}
     @stack('styles')
 </head>
 
