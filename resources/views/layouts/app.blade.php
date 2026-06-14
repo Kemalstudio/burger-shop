@@ -33,9 +33,12 @@
                             <div class="main-menu  d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a class="{{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">home</a></li>
-                                        <li><a class="{{ request()->is('menu') ? 'active' : '' }}" href="{{ url('/menu') }}">Menu</a></li>
-                                        <li><a class="{{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">About</a></li>
+                                        <li>
+                                            <a class="{{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">home</a></li>
+                                        <li>
+                                            <a class="{{ request()->is('menu') ? 'active' : '' }}" href="{{ url('/menu') }}">Menu</a></li>
+                                        <li>
+                                            <a class="{{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">About</a></li>
                                         <!-- <li><a class="{{ request()->is('shop') ? 'active' : '' }}" href="{{ url('/shop') }}">Shop</a></li> -->
                                         <li><a class="{{ request()->is('contact') ? 'active' : '' }}" href="{{ url('/contact') }}">Contact</a></li>
                                     </ul>
@@ -213,7 +216,6 @@
     <script src="{{ asset('js/mail-script.js') }}"></script>
 
     <script src="{{ asset('js/main.js') }}"></script>
-    {{-- Место для подключения уникальных скриптов для отдельных страниц --}}
     @stack('scripts')
 </body>
 
