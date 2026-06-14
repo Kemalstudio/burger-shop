@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentBasePrice = 0;
     let currentAdditivesPrice = 0;
     let currentQuantity = 1;
+    let currentProductId = null;
 
     // =================================================================
     // ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ МОДАЛЬНЫМ ОКНОМ
@@ -90,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ГЛАВНАЯ ФУНКЦИЯ: ЗАПОЛНЕНИЕ МОДАЛЬНОГО ОКНА ДАННЫМИ
     // =================================================================
     function populateModal(productCard) {
+        currentProductId = productCard.dataset.productId || null;
         currentBasePrice = parseFloat(productCard.dataset.basePrice);
         currentAdditivesPrice = 0;
         currentQuantity = 1;
@@ -130,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
             additives.forEach(additive => {
                 const additiveCard = document.createElement('div');
                 additiveCard.className = 'additive-card';
+                additiveCard.dataset.additiveId = additive.id ?? '';
                 additiveCard.dataset.price = additive.price;
                 additiveCard.innerHTML = `
                     <img src="/${additive.image}" alt="${additive.name}" class="additive-image">
@@ -201,6 +204,70 @@ document.addEventListener('DOMContentLoaded', function () {
             currentQuantity--;
             quantityValueSpan.textContent = currentQuantity;
             updateTotalPrice();
+        }
+    });
+
+    // Добавить в корзину (AJAX)
+    const addToCartBtn = document.querySelector('.modal-add-to-cart-btn');
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', async () => {
+            if (!currentProductId) return alert('Нет товара');
+
+            const selectedAdditives = Array.from(document.querySelectorAll('#modal-additives-grid .additive-card.selected'))
+                .map(el => el.dataset.additiveId).filter(Boolean);
+
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            try {
+                const resp = await fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                    body: JSON.stringify({
+                        product_id: currentProductId,
+                        quantity: currentQuantity,
+                        selected_additives: selectedAdditives,
+                    }),
+                });
+                const json = await resp.json();
+                if (json.ok) {
+                    alert('Товар добавлен в корзину');
+                    closeModal();
+                } else {
+                    alert('Не удалось добавить в корзину');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Ошибка сети');
+            }
+        });
+    }
+
+    // Переключатель избранного (AJAX) — делегирование для кнопок в карточках
+    document.addEventListener('click', async (e) => {
+        const btn = e.target.closest('.favorite-toggle-btn');
+        if (!btn) return;
+        e.preventDefault();
+        const productId = btn.dataset.productId;
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        try {
+            const resp = await fetch('/favorites/toggle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                },
+                body: JSON.stringify({ product_id: productId }),
+            });
+            const json = await resp.json();
+            if (json.ok) {
+                btn.textContent = json.removed ? '❤' : '♥';
+            }
+        } catch (err) {
+            console.error(err);
         }
     });
 });

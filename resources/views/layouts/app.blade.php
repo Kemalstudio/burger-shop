@@ -7,6 +7,7 @@
     <title>Burger Shop - @yield('title')</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link class="shortcut-icon" rel="shortcut icon" type="image/x-icon" href="{{ asset('img/burger svg 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k.png') }}">
     <!-- CSS here -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
@@ -19,42 +20,92 @@
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('css/slicknav.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    
+
     <style>
-        .login_link {
-            color: #ffffff;
+        .header-area .main-header-area .book_room .book_btn .login_link {
+            background: transparent;
+            padding: 10px 22px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 400;
+            border: 1px solid #F2C64D;
+            color: #F2C64D !important;
+            border-radius: 30px;
+            font-family: "Paytone One", sans-serif;
             text-transform: uppercase;
+            display: inline-block;
+            transition: all 0.3s ease;
             text-decoration: none;
-            transition: 0.3s;
+            line-height: 1.2;
         }
-        .login_link:hover {
-            color: #FF6347 !important;
+
+        .header-area .main-header-area .book_room .book_btn .login_link:hover {
+            background: #F2C64D;
+            color: #1a1a1a !important;
+            border: 1px solid #F2C64D;
+        }
+
+        .header-area .main-header-area .book_room .book_btn .register_link {
+            background: #F0542C; /* Оранжево-красный цвет как в футере */
+            padding: 11px 22px;
+            font-size: 14px;
+            font-weight: 400;
+            border: 1px solid #F0542C;
+            color: #ffffff !important;
+            border-radius: 30px;
+            font-family: "Paytone One", sans-serif;
+            text-transform: uppercase;
+            display: inline-block;
+            transition: all 0.3s ease;
             text-decoration: none;
+            margin-left: 8px;
+            line-height: 1.2;
         }
+
+        .header-area .main-header-area .book_room .book_btn .register_link:hover {
+            background: transparent;
+            color: #F0542C !important;
+            border: 1px solid #F0542C;
+        }
+
+        /* Выпадающее меню авторизованного пользователя */
         .user_menu_dropdown .dropdown-toggle {
-            color: #FF6347;
-            font-weight: 600;
-            text-transform: uppercase;
+            background: transparent;
+            padding: 10px 22px;
             font-size: 14px;
+            font-weight: 400;
+            border: 1px solid #F2C64D;
+            color: #F2C64D !important;
+            border-radius: 30px;
+            font-family: "Paytone One", sans-serif;
+            text-transform: uppercase;
+            display: inline-block;
+            transition: all 0.3s ease;
             text-decoration: none;
             cursor: pointer;
         }
+
+        .user_menu_dropdown .dropdown-toggle:hover {
+            background: #F2C64D;
+            color: #1a1a1a !important;
+        }
+
         .user_menu_dropdown .dropdown-menu {
             background-color: #121212;
             border: 1px solid #333;
             margin-top: 10px;
             border-radius: 4px;
         }
+
         .user_menu_dropdown .dropdown-item {
             color: #ffffff;
             font-size: 14px;
             padding: 10px 20px;
+            font-family: "Raleway", sans-serif;
             transition: background-color 0.3s ease;
         }
+
         .user_menu_dropdown .dropdown-item:hover {
-            background-color: #FF6347 !important;
+            background-color: #F0542C !important;
             color: #ffffff !important;
         }
     </style>
@@ -62,220 +113,251 @@
 </head>
 
 <body>
-    <!-- header-start -->
-    <header>
-        <div class="header-area ">
-            <div id="sticky-header" class="main-header-area">
-                <div class="container-fluid p-0">
-                    <div class="row align-items-center no-gutters">
-                        <div class="col-xl-5 col-lg-5">
-                            <div class="main-menu  d-none d-lg-block">
-                                <nav>
-                                    <ul id="navigation">
-                                        <li>
-                                            <a class="{{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">home</a></li>
-                                        <li>
-                                            <a class="{{ request()->is('menu') ? 'active' : '' }}" href="{{ url('/menu') }}">Menu</a></li>
-                                        <li>
-                                            <a class="{{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">About</a></li>
-                                        <!-- <li><a class="{{ request()->is('shop') ? 'active' : '' }}" href="{{ url('/shop') }}">Shop</a></li> -->
-                                        <li><a class="{{ request()->is('contact') ? 'active' : '' }}" href="{{ url('/contact') }}">Contact</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
+<!-- header-start -->
+<header>
+    <div class="header-area ">
+        <div id="sticky-header" class="main-header-area">
+            <div class="container-fluid p-0">
+                <div class="row align-items-center no-gutters">
+                    <div class="col-xl-5 col-lg-5">
+                        <div class="main-menu  d-none d-lg-block">
+                            <nav>
+                                <ul id="navigation">
+                                    <li>
+                                        <a class="{{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">home</a></li>
+                                    <li>
+                                        <a class="{{ request()->is('menu') ? 'active' : '' }}" href="{{ url('/menu') }}">Menu</a></li>
+                                    <li>
+                                        <a class="{{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">About</a></li>
+                                    <!-- <li><a class="{{ request()->is('shop') ? 'active' : '' }}" href="{{ url('/shop') }}">Shop</a></li> -->
+                                    <li><a class="{{ request()->is('contact') ? 'active' : '' }}" href="{{ url('/contact') }}">Contact</a></li>
+                                </ul>
+                            </nav>
                         </div>
-                        <div class="col-xl-2 col-lg-2">
-                            <div class="logo-img">
-                                <a href="{{ url('/') }}">
-                                    <img src="{{ asset('img/logo.png') }}" alt="">
-                                </a>
-                            </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-2">
+                        <div class="logo-img">
+                            <a href="{{ url('/') }}">
+                                <img src="{{ asset('img/logo.png') }}" alt="">
+                            </a>
                         </div>
-                        <div class="col-xl-5 col-lg-5 d-none d-lg-block">
-                            <div class="book_room">
-                                <div class="socail_links">
-                                    <ul>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-instagram"></i>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 d-none d-lg-block">
+                        <div class="book_room">
+                            <div class="socail_links">
+                                <ul>
+                                    @auth
+                                    <li>
+                                        <a href="{{ route('cart.index') }}" title="Корзина">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('favorites.index') }}" title="Избранное">
+                                            <i class="fa fa-heart"></i>
+                                        </a>
+                                    </li>
+                                    @endauth
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-facebook"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-google-plus"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="book_btn d-none d-xl-block">
+                                @guest
+                                    <!-- Элементы для гостей (неавторизованных пользователей) -->
+                                    <a href="{{ route('login') }}" class="login_link">Войти</a>
+                                    <a href="{{ route('register') }}" class="register_link">Регистрация</a>
+                                @else
+                                    <!-- Выпадающий список для авторизованных пользователей -->
+                                    <div class="dropdown d-inline-block user_menu_dropdown">
+                                        <a class="dropdown-toggle" href="#" role="button" id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-user"></i> {{ Auth::user()->name }}
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuLink">
+                                            <a class="dropdown-item" href="{{ route('cart.index') }}">
+                                                <i class="fa fa-shopping-cart"></i> Корзина
                                             </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-twitter"></i>
+                                            <a class="dropdown-item" href="{{ route('favorites.index') }}">
+                                                <i class="fa fa-heart"></i> Избранное
                                             </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-facebook"></i>
+                                            <a class="dropdown-item" href="{{ route('orders.index') }}">
+                                                <i class="fa fa-list"></i> Мои заказы
                                             </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-google-plus"></i>
+                                            <a class="dropdown-item" href="{{ route('profile.show') }}">
+                                                <i class="fa fa-user"></i> Мой профиль
                                             </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="book_btn d-none d-xl-block">
-                                    @guest
-                                        <!-- Элементы для гостей -->
-                                        <a href="{{ route('login') }}" class="login_link mr-3">Войти</a>
-                                        <a href="{{ route('register') }}" class="boxed-btn3" style="padding: 10px 20px; font-size: 12px; text-transform: uppercase; border-radius: 4px;">Регистрация</a>
-                                    @else
-                                        <!-- Выпадающий список для авторизованных пользователей -->
-                                        <div class="dropdown d-inline-block user_menu_dropdown">
-                                            <a class="dropdown-toggle" href="#" role="button" id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-user"></i> {{ Auth::user()->name }}
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuLink">
-                                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                                    Выйти
+                                            @if(Auth::user()->isAdmin())
+                                                <hr style="border-color: #333; margin: 5px 0;">
+                                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                                    <i class="fa fa-cog"></i> Панель администратора
                                                 </a>
-                                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                                    @csrf
-                                                </form>
-                                            </div>
+                                            @endif
+                                            <hr style="border-color: #333; margin: 5px 0;">
+                                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                <i class="fa fa-sign-out"></i> Выйти
+                                            </a>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                @csrf
+                                            </form>
                                         </div>
-                                    @endguest
-                                </div>
+                                    </div>
+                                @endguest
                             </div>
                         </div>
-                        <div class="col-12">
-                            <div class="mobile_menu d-block d-lg-none"></div>
-                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
-    <!-- header-end -->
+    </div>
+</header>
+<!-- header-end -->
 
-    <main>
-        @yield('content')
-    </main>
+<main>
+    @yield('content')
+</main>
 
-    <!-- footer start -->
-    <footer class="footer">
-        <div class="footer_top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-4 col-md-6 col-lg-4">
-                        <div class="footer_widget text-center ">
-                            <h3 class="footer_title pos_margin">
-                                Ashgabat
-                            </h3>
-                            <p>тг.ц Berkarar. 2эт, 55магазин, Burger Shop <br>
-                                ул.Ataturk, 1заезд <br>
-                                <a href="#">info@burger.com</a>
-                            </p>
-                            <a class="number" href="#">+993 64 00 53 74</a>
-
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-6 col-lg-4">
-                        <div class="footer_widget text-center ">
-                            <h3 class="footer_title pos_margin">
-                                Turkmenistan
-                            </h3>
-                            <p>тг.ц Gulzemin. 3эт, 185магазин, Burger Shop <br>
-                                ул.Ataturk, 1заезд <br>
-                                <a href="#">info@burger.com</a>
-                            </p>
-                            <a class="number" href="#">+993 63 30 95 53</a>
-
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-12 col-lg-4">
-                        <div class="footer_widget">
-                            <h3 class="footer_title">
-                                Оставайтесь на связи
-                            </h3>
-                            <form action="#" class="newsletter_form">
-                                <input type="text" placeholder="Введите почту...">
-                                <button type="submit">Зарегистрироваться</button>
-                            </form>
-                            <p class="newsletter_text">Оставайтесь с нами, чтобы получить эксклюзивное предложение!</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-4">
-                        <div class="socail_links text-center">
-                            <ul>
-                                <li>
-                                    <a href="#">
-                                        <i class="ti-instagram"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="ti-twitter-alt"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="ti-facebook"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-google-plus"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="copy-right_text">
-            <div class="container">
-                <div class="footer_border"></div>
-                <div class="row">
-                    <div class="col-xl-12">
-                        <p class="copy_right text-center">
-                            Copyright &copy;
-                            <script>
-                                document.write(new Date().getFullYear());
-                            </script> Все права защищены
+<!-- footer start -->
+<footer class="footer">
+    <div class="footer_top">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-md-6 col-lg-4">
+                    <div class="footer_widget text-center ">
+                        <h3 class="footer_title pos_margin">
+                            Ashgabat
+                        </h3>
+                        <p>тг.ц Berkarar. 2эт, 55магазин, Burger Shop <br>
+                            ул.Ataturk, 1заезд <br>
+                            <a href="#">info@burger.com</a>
                         </p>
+                        <a class="number" href="#">+993 64 00 53 74</a>
+
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6 col-lg-4">
+                    <div class="footer_widget text-center ">
+                        <h3 class="footer_title pos_margin">
+                            Turkmenistan
+                        </h3>
+                        <p>тг.ц Gulzemin. 3эт, 185магазин, Burger Shop <br>
+                            ул.Ataturk, 1заезд <br>
+                            <a href="#">info@burger.com</a>
+                        </p>
+                        <a class="number" href="#">+993 63 30 95 53</a>
+
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-12 col-lg-4">
+                    <div class="footer_widget">
+                        <h3 class="footer_title">
+                            Оставайтесь на связи
+                        </h3>
+                        <form action="#" class="newsletter_form">
+                            <input type="text" placeholder="Введите почту...">
+                            <button type="submit">Зарегистрироваться</button>
+                        </form>
+                        <p class="newsletter_text">Оставайтесь с нами, чтобы получить эксклюзивное предложение!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4">
+                    <div class="socail_links text-center">
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    <i class="ti-instagram"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="ti-twitter-alt"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="ti-facebook"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-google-plus"></i>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
-    <!-- footer end -->
+    </div>
+    <div class="copy-right_text">
+        <div class="container">
+            <div class="footer_border"></div>
+            <div class="row">
+                <div class="col-xl-12">
+                    <p class="copy_right text-center">
+                        Copyright &copy;
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script> Все права защищены
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- footer end -->
 
-    <!-- JS here -->
-    <script src="{{ asset('js/vendor/modernizr-3.5.0.min.js') }}"></script>
-    <script src="{{ asset('js/vendor/jquery-1.12.4.min.js') }}"></script>
-    <script src="{{ asset('js/popper.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('js/isotope.pkgd.min.js') }}"></script>
-    <script src="{{ asset('js/ajax-form.js') }}"></script>
-    <script src="{{ asset('js/waypoints.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.counterup.min.js') }}"></script>
-    <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}"></script>
-    <script src="{{ asset('js/scrollIt.js') }}"></script>
-    <script src="{{ asset('js/jquery.scrollUp.min.js') }}"></script>
-    <script src="{{ asset('js/wow.min.js') }}"></script>
-    <script src="{{ asset('js/nice-select.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.slicknav.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('js/plugins.js') }}"></script>
+<!-- JS here -->
+<script src="{{ asset('js/vendor/modernizr-3.5.0.min.js') }}"></script>
+<script src="{{ asset('js/vendor/jquery-1.12.4.min.js') }}"></script>
+<script src="{{ asset('js/popper.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('js/isotope.pkgd.min.js') }}"></script>
+<script src="{{ asset('js/ajax-form.js') }}"></script>
+<script src="{{ asset('js/waypoints.min.js') }}"></script>
+<script src="{{ asset('js/jquery.counterup.min.js') }}"></script>
+<script src="{{ asset('js/imagesloaded.pkgd.min.js') }}"></script>
+<script src="{{ asset('js/scrollIt.js') }}"></script>
+<script src="{{ asset('js/jquery.scrollUp.min.js') }}"></script>
+<script src="{{ asset('js/wow.min.js') }}"></script>
+<script src="{{ asset('js/nice-select.min.js') }}"></script>
+<script src="{{ asset('js/jquery.slicknav.min.js') }}"></script>
+<script src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
+<script src="{{ asset('js/plugins.js') }}"></script>
 
-    <!--contact js-->
-    <script src="{{ asset('js/contact.js') }}"></script>
-    <script src="{{ asset('js/jquery.ajaxchimp.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.form.js') }}"></script>
-    <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('js/mail-script.js') }}"></script>
+<!--contact js-->
+<script src="{{ asset('js/contact.js') }}"></script>
+<script src="{{ asset('js/jquery.ajaxchimp.min.js') }}"></script>
+<script src="{{ asset('js/jquery.form.js') }}"></script>
+<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/mail-script.js') }}"></script>
 
-    <script src="{{ asset('js/main.js') }}"></script>
-    @stack('scripts')
+<script src="{{ asset('js/main.js') }}"></script>
+@stack('scripts')
 </body>
 
 </html>

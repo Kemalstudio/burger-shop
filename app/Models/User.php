@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'address',
+        'role',
+        'is_blocked',
     ];
 
     /**
@@ -44,5 +48,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Проверяет, является ли пользователь админом.
+     */
+    public function isAdmin(): bool
+    {
+        return ($this->role ?? 'user') === 'admin' || ($this->email ?? '') === 'kemalatayew913@gmail.com';
     }
 }

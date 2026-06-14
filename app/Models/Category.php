@@ -9,6 +9,8 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'parent_id'];
+
     // Связь для получения дочерних категорий (подкатегорий)
     public function children()
     {

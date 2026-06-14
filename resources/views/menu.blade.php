@@ -41,7 +41,8 @@
                 <p>В этой категории пока нет товаров.</p>
                 @else
                 @foreach($products as $product)
-                <div class="menu-product-card"
+                 <div class="menu-product-card"
+                     data-product-id="{{ $product->id }}"
                      data-parent-category="parent-{{ $product->category_id }}"
                      data-is-popular="{{ $product->is_popular ? 'true' : 'false' }}"
                      data-is-new="{{ $product->is_new ? 'true' : 'false' }}"
@@ -69,7 +70,10 @@
                         </div>
                         <footer class="menu-product-footer">
                             <span class="menu-product-price">{{ number_format($product->price, 2) }} TMT</span>
-                            <button type="button" class="menu-product-select-btn">Выбрать</button>
+                            <div class="product-actions">
+                                <button type="button" class="favorite-toggle-btn" data-product-id="{{ $product->id }}">❤</button>
+                                <button type="button" class="menu-product-select-btn">Выбрать</button>
+                            </div>
                         </footer>
                     </div>
                 </div>
