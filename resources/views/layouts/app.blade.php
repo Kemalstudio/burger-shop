@@ -7,7 +7,6 @@
     <title>Burger Shop - @yield('title')</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link class="shortcut-icon" rel="shortcut icon" type="image/x-icon" href="{{ asset('img/burger svg 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k 4k.png') }}">
     <!-- CSS here -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
@@ -22,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
     <style>
+        /* Переопределение стилей для кнопок авторизации в шапке */
         .header-area .main-header-area .book_room .book_btn .login_link {
             background: transparent;
             padding: 10px 22px;
@@ -146,18 +146,6 @@
                         <div class="book_room">
                             <div class="socail_links">
                                 <ul>
-                                    @auth
-                                    <li>
-                                        <a href="{{ route('cart.index') }}" title="Корзина">
-                                            <i class="fa fa-shopping-cart"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('favorites.index') }}" title="Избранное">
-                                            <i class="fa fa-heart"></i>
-                                        </a>
-                                    </li>
-                                    @endauth
                                     <li>
                                         <a href="#">
                                             <i class="fa fa-instagram"></i>
@@ -179,48 +167,6 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
-                            <div class="book_btn d-none d-xl-block">
-                                @guest
-                                    <!-- Элементы для гостей (неавторизованных пользователей) -->
-                                    <a href="{{ route('login') }}" class="login_link">Войти</a>
-                                    <a href="{{ route('register') }}" class="register_link">Регистрация</a>
-                                @else
-                                    <!-- Выпадающий список для авторизованных пользователей -->
-                                    <div class="dropdown d-inline-block user_menu_dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-user"></i> {{ Auth::user()->name }}
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuLink">
-                                            <a class="dropdown-item" href="{{ route('cart.index') }}">
-                                                <i class="fa fa-shopping-cart"></i> Корзина
-                                            </a>
-                                            <a class="dropdown-item" href="{{ route('favorites.index') }}">
-                                                <i class="fa fa-heart"></i> Избранное
-                                            </a>
-                                            <a class="dropdown-item" href="{{ route('orders.index') }}">
-                                                <i class="fa fa-list"></i> Мои заказы
-                                            </a>
-                                            <a class="dropdown-item" href="{{ route('profile.show') }}">
-                                                <i class="fa fa-user"></i> Мой профиль
-                                            </a>
-                                            @if(Auth::user()->isAdmin())
-                                                <hr style="border-color: #333; margin: 5px 0;">
-                                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                                                    <i class="fa fa-cog"></i> Панель администратора
-                                                </a>
-                                            @endif
-                                            <hr style="border-color: #333; margin: 5px 0;">
-                                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                                <i class="fa fa-sign-out"></i> Выйти
-                                            </a>
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                                @csrf
-                                            </form>
-                                        </div>
-                                    </div>
-                                @endguest
                             </div>
                         </div>
                     </div>
